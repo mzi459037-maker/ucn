@@ -1,0 +1,6 @@
+{
+  "name": "UCN",
+  "description": "End-to-end encrypted audio/video VoIP calling, 1:1 & group messaging, read receipts, offline storage, and cloud sync.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

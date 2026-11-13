@@ -1,0 +1,284 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Private authenticated user profile, PII, and synced preferences.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "format": "email", "description": "User email" },
+        "displayName": { "type": "string", "description": "Display name" },
+        "handle": { "type": "string", "description": "Unique UCN handle" },
+        "photoUrl": { "type": "string", "description": "Optional avatar URL" },
+        "avatarBase64": { "type": "string", "description": "Optional compressed JPEG profile picture (Base64)" },
+        "phoneNumber": { "type": "string", "description": "Optional private phone number for SHA-256 friend discovery" },
+        "darkMode": { "type": "string", "enum": ["system", "dark", "light"] },
+        "readReceiptsEnabled": { "type": "boolean" },
+        "voipCodecProfile": { "type": "string", "enum": ["opus_48k_vp9_hd", "opus_24k_vp8_balanced", "opus_12k_fec_low_bw"] },
+        "autoSyncEnabled": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp" }
+      },
+      "required": ["userId", "email", "displayName", "handle", "darkMode", "readReceiptsEnabled", "voipCodecProfile", "autoSyncEnabled", "createdAt", "updatedAt"]
+    },
+    "UserKeyringBackup": {
+      "title": "UserKeyringBackup",
+      "description": "Owner-only multi-device E2EE ECDH keyring backup.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "publicKeyBase64": { "type": "string" },
+        "privateKeyBase64": { "type": "string" },
+        "keyFingerprint": { "type": "string" },
+        "keyVersion": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "publicKeyBase64", "privateKeyBase64", "keyFingerprint", "keyVersion", "createdAt", "updatedAt"]
+    },
+    "SyncedDevice": {
+      "title": "SyncedDevice",
+      "description": "Synced device session for cloud multi-device management.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "deviceName": { "type": "string" },
+        "platform": { "type": "string" },
+        "appVersion": { "type": "string" },
+        "keyFingerprint": { "type": "string" },
+        "lastSyncAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "deviceName", "platform", "appVersion", "keyFingerprint", "lastSyncAt", "createdAt"]
+    },
+    "ContactEntry": {
+      "title": "ContactEntry",
+      "description": "User's saved UCN contacts and verified public keys.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "peerUserId": { "type": "string" },
+        "peerDisplayName": { "type": "string" },
+        "peerHandle": { "type": "string" },
+        "peerPublicKeyBase64": { "type": "string" },
+        "peerKeyFingerprint": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "deviceContactName": { "type": "string", "description": "Optional matched name from user device address book" },
+        "discoverySource": { "type": "string", "enum": ["manual", "device_contacts"] },
+        "matchedVia": { "type": "string", "enum": ["email", "phone", "handle", "uid"] },
+        "peerPhotoUrl": { "type": "string" },
+        "peerAvatarBase64": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "peerUserId", "peerDisplayName", "peerHandle", "peerPublicKeyBase64", "peerKeyFingerprint", "verified", "createdAt", "updatedAt"]
+    },
+    "ContactHashEntry": {
+      "title": "ContactHashEntry",
+      "description": "Privacy-preserving SHA-256 lookup index mapping hashed normalized email/phone identifiers to UCN userId (no plaintext PII).",
+      "type": "object",
+      "properties": {
+        "hashId": { "type": "string", "description": "64-char lowercase SHA-256 hex digest" },
+        "userId": { "type": "string", "description": "Owner Firebase Auth UID" },
+        "identifierType": { "type": "string", "enum": ["email", "phone"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["hashId", "userId", "identifierType", "createdAt", "updatedAt"]
+    },
+    "PublicIdentity": {
+      "title": "PublicIdentity",
+      "description": "Non-PII public identity and ECDH public key for peer verification.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "handle": { "type": "string" },
+        "publicKeyBase64": { "type": "string" },
+        "keyFingerprint": { "type": "string" },
+        "photoUrl": { "type": "string", "description": "Optional avatar URL" },
+        "avatarBase64": { "type": "string", "description": "Optional compressed JPEG profile picture (Base64)" },
+        "statusText": { "type": "string" },
+        "isOnline": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "displayName", "handle", "publicKeyBase64", "keyFingerprint", "isOnline", "createdAt", "updatedAt"]
+    },
+    "HandleDirectory": {
+      "title": "HandleDirectory",
+      "description": "Exact handle lookup document mapping UCN handle to userId and public key.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "handle": { "type": "string" },
+        "displayName": { "type": "string" },
+        "publicKeyBase64": { "type": "string" },
+        "keyFingerprint": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "handle", "displayName", "publicKeyBase64", "keyFingerprint", "createdAt", "updatedAt"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "1:1 or group E2EE conversation metadata and wrapped AES-256 session keys.",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["direct", "group"] },
+        "title": { "type": "string" },
+        "createdBy": { "type": "string" },
+        "memberUids": { "type": "array" },
+        "memberNames": { "type": "object" },
+        "wrappedKeys": { "type": "object" },
+        "keyVersion": { "type": "integer" },
+        "lastMessageCiphertext": { "type": "string" },
+        "lastMessageIv": { "type": "string" },
+        "lastMessageSenderId": { "type": "string" },
+        "lastMessageSenderName": { "type": "string" },
+        "lastMessageType": { "type": "string" },
+        "lastMessageAt": { "type": "string", "format": "date-time" },
+        "activeCallId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["type", "title", "createdBy", "memberUids", "memberNames", "wrappedKeys", "keyVersion", "createdAt", "updatedAt"]
+    },
+    "EncryptedMessage": {
+      "title": "EncryptedMessage",
+      "description": "End-to-end encrypted message and optional encrypted media transfer.",
+      "type": "object",
+      "properties": {
+        "conversationId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "memberUids": { "type": "array" },
+        "messageType": { "type": "string", "enum": ["text", "image", "audio", "file", "call_event"] },
+        "ciphertext": { "type": "string" },
+        "iv": { "type": "string" },
+        "mediaCiphertext": { "type": "string" },
+        "mediaIv": { "type": "string" },
+        "mediaMimeType": { "type": "string" },
+        "mediaName": { "type": "string" },
+        "mediaDurationMs": { "type": "integer" },
+        "keyVersion": { "type": "integer" },
+        "clientMessageId": { "type": "string" },
+        "clientTimestampMs": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["conversationId", "senderId", "senderName", "memberUids", "messageType", "ciphertext", "iv", "keyVersion", "clientMessageId", "clientTimestampMs", "createdAt"]
+    },
+    "ReadReceipt": {
+      "title": "ReadReceipt",
+      "description": "Per-member delivery and read cursor within a conversation.",
+      "type": "object",
+      "properties": {
+        "conversationId": { "type": "string" },
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "memberUids": { "type": "array" },
+        "lastDeliveredAtMs": { "type": "integer" },
+        "lastReadAtMs": { "type": "integer" },
+        "readReceiptsEnabled": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["conversationId", "userId", "displayName", "memberUids", "lastDeliveredAtMs", "lastReadAtMs", "readReceiptsEnabled", "updatedAt"]
+    },
+    "VoipCall": {
+      "title": "VoipCall",
+      "description": "Audio, video, and group VoIP call signaling state.",
+      "type": "object",
+      "properties": {
+        "conversationId": { "type": "string" },
+        "conversationTitle": { "type": "string" },
+        "initiatorId": { "type": "string" },
+        "initiatorName": { "type": "string" },
+        "callType": { "type": "string", "enum": ["audio", "video"] },
+        "isGroup": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["ringing", "active", "ended"] },
+        "memberUids": { "type": "array" },
+        "activeParticipantUids": { "type": "array" },
+        "codecProfile": { "type": "string", "enum": ["opus_48k_vp9_hd", "opus_24k_vp8_balanced", "opus_12k_fec_low_bw"] },
+        "sasCode": { "type": "string" },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "endedAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["conversationId", "conversationTitle", "initiatorId", "initiatorName", "callType", "isGroup", "status", "memberUids", "activeParticipantUids", "codecProfile", "sasCode", "startedAt", "updatedAt"]
+    },
+    "CallParticipant": {
+      "title": "CallParticipant",
+      "description": "Live VoIP participant media state, DTLS fingerprint, and network telemetry.",
+      "type": "object",
+      "properties": {
+        "callId": { "type": "string" },
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "memberUids": { "type": "array" },
+        "audioEnabled": { "type": "boolean" },
+        "videoEnabled": { "type": "boolean" },
+        "speakerEnabled": { "type": "boolean" },
+        "networkQuality": { "type": "string", "enum": ["excellent", "good", "fair", "poor"] },
+        "rttMs": { "type": "integer" },
+        "jitterMs": { "type": "integer" },
+        "bitrateKbps": { "type": "integer" },
+        "packetLossTenthsPct": { "type": "integer" },
+        "iceState": { "type": "string", "enum": ["gathering", "connected", "relay", "disconnected"] },
+        "sdpFingerprint": { "type": "string" },
+        "joinedAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["callId", "userId", "displayName", "memberUids", "audioEnabled", "videoEnabled", "speakerEnabled", "networkQuality", "rttMs", "jitterMs", "bitrateKbps", "packetLossTenthsPct", "iceState", "sdpFingerprint", "joinedAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private owner-only user profile and cloud sync preferences."
+    },
+    "/users/{userId}/private/{docId}": {
+      "schema": { "$ref": "#/entities/UserKeyringBackup" },
+      "description": "Owner-only multi-device E2EE key backup."
+    },
+    "/users/{userId}/devices/{deviceId}": {
+      "schema": { "$ref": "#/entities/SyncedDevice" },
+      "description": "Owner-only list of linked devices synced with UCN Cloud."
+    },
+    "/users/{userId}/contacts/{contactId}": {
+      "schema": { "$ref": "#/entities/ContactEntry" },
+      "description": "Owner-only saved UCN peer contacts and verified fingerprints."
+    },
+    "/users_public/{userId}": {
+      "schema": { "$ref": "#/entities/PublicIdentity" },
+      "description": "Non-PII public identity & ECDH public key."
+    },
+    "/handles/{handle}": {
+      "schema": { "$ref": "#/entities/HandleDirectory" },
+      "description": "Exact-match handle lookup for peer discovery."
+    },
+    "/contact_index/{hashId}": {
+      "schema": { "$ref": "#/entities/ContactHashEntry" },
+      "description": "SHA-256 hashed email/phone exact-match lookup index for private device contact friend discovery."
+    },
+    "/conversations/{conversationId}": {
+      "schema": { "$ref": "#/entities/Conversation" },
+      "description": "1:1 and group encrypted conversation metadata."
+    },
+    "/conversations/{conversationId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/EncryptedMessage" },
+      "description": "End-to-end encrypted messages and media payloads."
+    },
+    "/conversations/{conversationId}/readReceipts/{userId}": {
+      "schema": { "$ref": "#/entities/ReadReceipt" },
+      "description": "Per-member delivery and read receipts."
+    },
+    "/calls/{callId}": {
+      "schema": { "$ref": "#/entities/VoipCall" },
+      "description": "Active and historical VoIP audio/video call sessions."
+    },
+    "/calls/{callId}/participants/{userId}": {
+      "schema": { "$ref": "#/entities/CallParticipant" },
+      "description": "Per-participant VoIP media tracks, ICE state, and telemetry."
+    }
+  }
+}

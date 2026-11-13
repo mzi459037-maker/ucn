@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">UCN</string>
+    <string name="profile_title">My Profile</string>
+    <string name="profile_display_name_label">Display Name</string>
+    <string name="profile_display_name_error">Display name cannot be empty</string>
+    <string name="profile_status_label">Public Status Note</string>
+    <string name="profile_choose_photo">Change Photo</string>
+    <string name="profile_remove_photo">Remove Photo</string>
+    <string name="profile_save_button">Save Profile</string>
+    <string name="profile_discard_button">Discard Changes</string>
+    <string name="profile_phone_label">Phone Number (Optional · Friend Discovery)</string>
+    <string name="contact_sync_title">Friend Discovery</string>
+    <string name="contact_sync_now">Sync Contacts Now</string>
+    <string name="contact_sync_grant_cta">Allow Contacts &amp; Sync</string>
+    <string name="contact_sync_disclosure_title">Private Device Contact Discovery</string>
+    <string name="contact_sync_disclosure_body">UCN hashes your device contacts\' emails and phone numbers locally using SHA-256 before checking Firestore for friends already on UCN. Your raw address book never leaves your device.</string>
+    <string name="contact_sync_auto_title">Auto-Sync Contacts Service</string>
+    <string name="contact_sync_auto_subtitle">Automatically discover friends when device contacts change</string>
+    <string name="contact_sync_empty_title">No UCN Friends Discovered Yet</string>
+    <string name="contact_sync_empty_body">Tap Sync Contacts Now to match your address book hashes against UCN, or add peers manually by @handle.</string>
+    <string name="chats_search_placeholder">Filter conversations by name...</string>
+    <string name="chats_search_clear">Clear search</string>
+    <string name="chats_search_empty_title">No matching conversations</string>
+    <string name="chats_search_empty_body">No encrypted chats or groups match \"%1$s\". Try another name or clear your filter.</string>
+    <string name="chats_search_clear_action">Clear Search</string>
+</resources>
